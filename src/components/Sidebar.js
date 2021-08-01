@@ -1,4 +1,6 @@
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 import {
   FiberManualRecord as FiberManualRecordIcon,
   Create as CreateIcon,
@@ -21,20 +23,21 @@ import {
 } from "../styles/Sidebar.styles";
 import { useCollection } from "react-firebase-hooks/firestore";
 
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import SidebarOption from "./SidebarOption";
 
 function Sidebar() {
-  // eslint-disable-next-line
-  const [channels, loading, errors] = useCollection(db.collection("rooms"));
+  const [user] = useAuthState(auth);
+  const [channels] = useCollection(db.collection("rooms"));
+
   return (
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2>Scooby Info</h2>
+          <h2>Scooby HQ</h2>
           <h3>
             <FiberManualRecordIcon />
-            Scooby Doo
+            {user?.displayName}
           </h3>
         </SidebarInfo>
         <CreateIcon />
@@ -50,12 +53,11 @@ function Sidebar() {
       <SidebarOption Icon={ExpandLessIcon} title="Show less" />
       <hr />
       <SidebarOption Icon={ExpandMoreIcon} title="Channels" />
-      <hr />
-      <SidebarOption Icon={AddIcon} addChannelOption title="Add channel" />
-
       {channels?.docs.map((doc) => (
         <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
       ))}
+      <hr />
+      <SidebarOption Icon={AddIcon} addChannelOption title="Add channel" />
     </SidebarContainer>
   );
 }
