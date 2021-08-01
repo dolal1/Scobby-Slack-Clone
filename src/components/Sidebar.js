@@ -25,6 +25,7 @@ import { db } from "../firebase";
 import SidebarOption from "./SidebarOption";
 
 function Sidebar() {
+  // eslint-disable-next-line
   const [channels, loading, errors] = useCollection(db.collection("rooms"));
   return (
     <SidebarContainer>

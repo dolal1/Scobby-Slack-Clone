@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
 import "./App.css";
+import Chat from "./components/Chat";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -13,9 +14,11 @@ function App() {
         <>
           <Header />
           <AppBody>
+            <Sidebar />
             <Switch>
-              <Sidebar />
-              <Route path="/">{/* Chart */}</Route>
+              <Route path="/" exact>
+                <Chat />
+              </Route>
             </Switch>
           </AppBody>
         </>
